@@ -9,6 +9,8 @@ var (
 	ErrEmailExists       = errors.New("email already exists")
 	ErrInvalidToken      = errors.New("invalid token")
 	ErrServerError       = errors.New("internal server error")
+	ErrInvalidPassword   = errors.New("invalid password")
+	ErrInvalidEmail      = errors.New("invalid email")
 )
 
 // APIError 定义API错误响应结构

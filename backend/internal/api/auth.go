@@ -107,7 +107,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, models.NewResponse(
 			http.StatusBadRequest,
-			err.Error(),
+			"请检查输入信息格式是否正确",
 			nil,
 		))
 		return
@@ -121,7 +121,26 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	if err := h.authService.Register(user); err != nil {
-		h.handleError(c, err)
+		switch err {
+		case errors.ErrEmailExists:
+			c.JSON(http.StatusConflict, models.NewResponse(
+				http.StatusConflict,
+				"该邮箱已被注册",
+				nil,
+			))
+		case errors.ErrInvalidPassword:
+			c.JSON(http.StatusBadRequest, models.NewResponse(
+				http.StatusBadRequest,
+				"密码必须包含至少一个大写字母",
+				nil,
+			))
+		default:
+			c.JSON(http.StatusInternalServerError, models.NewResponse(
+				http.StatusInternalServerError,
+				"服务器错误，请稍后重试",
+				nil,
+			))
+		}
 		return
 	}
 

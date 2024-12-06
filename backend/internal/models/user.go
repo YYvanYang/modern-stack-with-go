@@ -27,11 +27,6 @@ func (u *User) BeforeSave(tx *gorm.DB) error {
 		return errors.New("email is required")
 	}
 
-	// 验证密码长度
-	if u.Password != "" && len(u.Password) < 6 {
-		return errors.New("password must be at least 6 characters")
-	}
-
 	// 验证名称
 	if u.Name == "" {
 		return errors.New("name is required")
@@ -42,11 +37,8 @@ func (u *User) BeforeSave(tx *gorm.DB) error {
 		return errors.New("invalid email format")
 	}
 
-	// 验证密码
+	// 加密密码
 	if u.Password != "" {
-		if err := isValidPassword(u.Password); err != nil {
-			return err
-		}
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 		if err != nil {
 			return err
@@ -80,20 +72,4 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
 func isValidEmail(email string) bool {
 	// 简单的邮箱格式验证
 	return strings.Contains(email, "@") && strings.Contains(email, ".")
-}
-
-// 添加密码验证函数
-func isValidPassword(password string) error {
-	if len(password) < 6 {
-		return errors.New("password must be at least 6 characters")
-	}
-	// 检查是否包含数字
-	if !strings.ContainsAny(password, "0123456789") {
-		return errors.New("password must contain at least one number")
-	}
-	// 检查是否包含大写字母
-	if !strings.ContainsAny(password, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
-		return errors.New("password must contain at least one uppercase letter")
-	}
-	return nil
 } 

@@ -12,11 +12,13 @@ export const authService = {
       body: JSON.stringify(credentials),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('登录失败');
+      throw new Error(data.message || '登录失败');
     }
 
-    return response.json();
+    return data;
   },
 
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
@@ -26,12 +28,15 @@ export const authService = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(credentials),
+      cache: 'no-store',
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('注册失败');
+      throw new Error(data.message || '注册失败');
     }
 
-    return response.json();
+    return data;
   },
 }; 

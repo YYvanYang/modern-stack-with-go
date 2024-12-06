@@ -20,10 +20,10 @@ export default function RegisterPage() {
 
     try {
       const response = await authService.register({ name, email, password });
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', response.token);
       router.push('/');
-    } catch (_err) {
-      setError('注册失败，请稍后重试');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '注册失败，请稍后重试');
     } finally {
       setLoading(false);
     }
