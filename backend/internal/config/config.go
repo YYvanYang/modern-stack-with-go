@@ -68,9 +68,15 @@ func getEnv(key, defaultValue string) string {
 }
 
 func mustGetEnv(key string) string {
-	value := os.Getenv(key)
-	if value == "" {
-		log.Fatalf("Environment variable %s is required", key)
+	if value := os.Getenv(key); value != "" {
+		return value
 	}
-	return value
+	if os.Getenv("GIN_MODE") == "debug" {
+		switch key {
+		case "JWT_SECRET":
+			return "development_jwt_secret_key"
+		}
+	}
+	log.Fatalf("Environment variable %s is required", key)
+	return ""
 } 
