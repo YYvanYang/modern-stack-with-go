@@ -19,11 +19,9 @@ export default function LoginPage() {
 
     try {
       const response = await authService.login({ email, password });
-      // 保存 token 到 localStorage
       localStorage.setItem('token', response.data.token);
-      // 跳转到首页
       router.push('/');
-    } catch (err) {
+    } catch (_err) {
       setError('邮箱或密码错误');
     } finally {
       setLoading(false);
@@ -31,17 +29,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white dark:bg-gray-800 rounded-lg shadow">
         <div>
-          <h2 className="text-center text-3xl font-bold">登录</h2>
+          <h2 className="text-center text-3xl font-bold text-gray-900 dark:text-white">
+            登录
+          </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="text-red-500 text-center text-sm">{error}</div>
+            <div className="text-red-500 dark:text-red-400 text-center text-sm">
+              {error}
+            </div>
           )}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">
+            <label 
+              htmlFor="email" 
+              className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+            >
               邮箱
             </label>
             <input
@@ -50,11 +55,14 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">
+            <label 
+              htmlFor="password" 
+              className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+            >
               密码
             </label>
             <input
@@ -63,20 +71,23 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           <div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed dark:focus:ring-offset-gray-900"
             >
               {loading ? '登录中...' : '登录'}
             </button>
           </div>
           <div className="text-center">
-            <Link href="/register" className="text-sm text-blue-600 hover:text-blue-500">
+            <Link 
+              href="/register" 
+              className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+            >
               还没有账号？立即注册
             </Link>
           </div>

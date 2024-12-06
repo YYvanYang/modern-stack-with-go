@@ -7,8 +7,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh">
-      <body>
+    <html lang="zh" suppressHydrationWarning>
+      <head />
+      <body className="antialiased bg-white dark:bg-gray-900">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
