@@ -28,6 +28,7 @@ func (r *Router) Setup(engine *gin.Engine) {
 	public := v1.Group("")
 	{
 		public.GET("/health", HealthCheck)
+		public.HEAD("/health", HealthCheck)
 		auth := public.Group("/auth")
 		{
 			auth.POST("/login", r.authHandler.Login)
