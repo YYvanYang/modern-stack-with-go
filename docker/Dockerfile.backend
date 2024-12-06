@@ -4,10 +4,13 @@ WORKDIR /app
 
 RUN apk add --no-cache gcc musl-dev
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY go.mod ./
+RUN go mod download && \
+    go mod tidy
 
 COPY . .
+
+RUN go mod tidy
 
 ENV GIN_MODE=debug
 ENV PORT=8080

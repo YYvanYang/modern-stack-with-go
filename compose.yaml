@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ./docker/Dockerfile.frontend
+      dockerfile: ../docker/Dockerfile.frontend
     ports:
       - "3000:3000"
     environment:
@@ -10,21 +10,21 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    develop:
-      watch:
-        - action: sync
-          path: ./frontend
-          target: /app
-          ignore:
-            - node_modules/
-            - .next/
-        - action: rebuild
-          path: ./frontend/package.json
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./frontend
+    #       target: /app
+    #       ignore:
+    #         - node_modules/
+    #         - .next/
+    #     - action: rebuild
+    #       path: ./frontend/package.json
 
   backend:
     build:
       context: ./backend
-      dockerfile: ./docker/Dockerfile.backend
+      dockerfile: ../docker/Dockerfile.backend
     ports:
       - "8080:8080"
     environment:
@@ -36,16 +36,16 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    develop:
-      watch:
-        - action: sync
-          path: ./backend
-          target: /app
-          ignore:
-            - .git/
-            - .env
-        - action: rebuild
-          path: ./backend/go.mod
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./backend
+    #       target: /app
+    #       ignore:
+    #         - .git/
+    #         - .env
+    #     - action: rebuild
+    #       path: ./backend/go.mod
 
   postgres:
     image: postgres:15-alpine
